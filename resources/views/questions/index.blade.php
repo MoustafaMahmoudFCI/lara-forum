@@ -26,12 +26,16 @@
 						</div>
 						<div class="media-body">
 							<div class="d-flex align-items-center">
-								<h3><a href="{{ route('questions.show' , $question->id) }}">{{ $question->title }}</a></h3>
+								<h3><a href="{{ route('questions.show' , $question->slug) }}">{{ $question->title }}</a></h3>
 								<div class="ml-auto">
-									<a href="{{ route('questions.edit' , $question->id) }}" class="btn btn-sm btn-outline-info">Edit</a>
-									{!! Form::open(['route' => ['questions.destroy' , $question->id] , 'method' => 'delete'  , 'class' => 'd-inline']) !!}
-									<button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are You Sure ? ')">Delete</button>
+									@can('update', $question)
+										<a href="{{ route('questions.edit' , $question->id) }}" class="btn btn-sm btn-outline-info">Edit</a>
+									@endcan
+									@can('delete', $question)
+										{!! Form::open(['route' => ['questions.destroy' , $question->id] , 'method' => 'delete'  , 'class' => 'd-inline']) !!}
+										<button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are You Sure ? ')">Delete</button>
 									{!! Form::close() !!}
+									@endcan
 								</div>
 							</div>
 							<p class="lead">
