@@ -63,9 +63,9 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Question $question)
     {
-        //
+        return view('questions.edit' , compact('question'));
     }
 
     /**
@@ -77,7 +77,13 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $this->validate($request , [
+            'title' => 'required|max:255',
+            'body'  => 'required' ,
+        ]);
+        $data['slug'] = str_slug($data['title']);
+        Question::where('id' , $id)->update($data);
+        return redirect('/questions')->with('success' , 'Question has been Updated');
     }
 
     /**
