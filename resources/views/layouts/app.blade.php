@@ -13,8 +13,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    {{-- toastr notification --}}
-    {{ Html::script('plugins/toastr-master/toastr.min.css') }}
 </head>
 <body>
     <div id="app">
@@ -75,11 +73,5 @@
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    {{ Html::script('plugins/toastr-master/toastr.min.js') }}
-    <script>
-        @if(Session::has('success'))
-            toastr.success('{{ Session::get('success') }}')
-        @endif
-    </script>
 </body>
 </html>
