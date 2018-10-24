@@ -13,7 +13,11 @@ class Question extends Model
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User');
+    }
+    public function answers()
+    {
+    	return $this->hasMany('App\Answer');
     }
 
     public function getCreatedDateAttribute()
@@ -23,7 +27,7 @@ class Question extends Model
 
     public function getStatusAttribute()
     {
-    	if ($this->answers > 0) {
+    	if ($this->answers_count > 0) {
     		if ($this->best_answer_id) {
     			return 'best-answer';
     		}
