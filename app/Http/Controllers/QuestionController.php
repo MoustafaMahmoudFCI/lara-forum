@@ -25,7 +25,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+        return view('questions.create');
     }
 
     /**
@@ -36,7 +36,14 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $this->validate($request , [
+            'title' => 'required|max:255',
+            'body'  => 'required' ,
+        ]);
+        $data['user_id'] = auth()->id();
+        $data['slug'] = str_slug($data['title']);
+        Question::create($data);
+        return redirect()->route('questions.index')->with('success' , 'Question has been submitted');
     }
 
     /**
