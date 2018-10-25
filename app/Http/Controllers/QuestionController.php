@@ -58,7 +58,7 @@ class QuestionController extends Controller
      */
     public function show($slug)
     {
-        $question = Question::where('slug' , $slug)->first();
+        $question = Question::with('answers.user')->where('slug' , $slug)->first();
         if ($question) {
             $question->increment('views');
             return view('questions.show' , compact('question'));
