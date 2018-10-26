@@ -3,9 +3,11 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-12">
-			<h3 class="text-primary">{{ $question->title }}</h3>
+			<div class="media">
+				<h3 class="text-primary">{{ $question->title }}</h3>
 			<div class="ml-auto">
 				<a href="{{ route('questions.index') }}" class="btn btn-outline-success text-capitalize">back to all question</a>
+			</div>
 			</div>
 			<div class="card mt-2">
 				<div class="card-header py-2 ">
@@ -31,7 +33,22 @@
 				</div>
 				<div class="card-body">
 					<div class="media">
-						{!! $question->body !!}
+						<div class="d-flex flex-column align-items-center vote-controls">
+							<a class="vote-up" title="This question is useful">
+								<i class="fa fa-caret-up fa-3x"></i>
+							</a>
+							<span class="votes-count">{{ $question->votes }}</span>
+							<a class="vote-down off" title="This question is not useful">
+								<i class="fa fa-caret-down fa-3x"></i>
+							</a>
+							<a class="favorite favorited" title="Mark as Favorite">
+								<i class="fa fa-star fa-2x"></i>
+								<span class="favorites-count">{{ $question->views }}</span>
+							</a>
+						</div>
+						<div class="media-body">
+							{!! Markdown::convertToHtml($question->body) !!}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -53,8 +70,20 @@
 				</div>
 				<div class="card-body">
 					<div class="media">
+						<div class="d-flex flex-column align-items-center vote-controls">
+							<a class="vote-up" title="This answer is useful">
+								<i class="fa fa-caret-up fa-3x"></i>
+							</a>
+							<span class="votes-count">{{ $answer->votes_count }}</span>
+							<a class="vote-down off" title="This answer is not useful">
+								<i class="fa fa-caret-down fa-3x"></i>
+							</a>
+							<a class="is-best-answer best-answer" title="Mark this as best answer">
+								<i class="fa fa-check fa-2x"></i>
+							</a>
+						</div>
 						<div class="media-body">
-							{{ $answer->body }}
+							{!! Markdown::convertToHtml($answer->body) !!}
 						</div>
 					</div>
 				</div>
