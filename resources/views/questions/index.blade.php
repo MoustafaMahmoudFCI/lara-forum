@@ -39,7 +39,7 @@
 								</div>
 							</div>
 							<p class="lead">
-								Asked By <a href="">{{ $question->user->name }}</a>
+								Asked By <a href="">{{ $question->user->name }}</a>&nbsp;
 								<small class="text-muted">{{ $question->created_date }}</small>
 							</p>
 							<p>{{ str_limit($question->body, 250) }}</p>

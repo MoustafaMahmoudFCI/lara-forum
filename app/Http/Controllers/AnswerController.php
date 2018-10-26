@@ -3,50 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Question;
 use Illuminate\Http\Request;
 
 class AnswerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+ 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Question $question , Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Answer  $answer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Answer $answer)
-    {
-        //
+        $data = $request->validate(['body' => 'required']);
+        $data['user_id'] = \Auth::id();
+        $question->answers()->create($data);
+        return back()->with('success' , 'Answer submitted successfully');
     }
 
     /**
@@ -55,9 +29,10 @@ class AnswerController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Answer $answer)
+    public function edit(Question $question , Answer $answer)
     {
-        //
+        $this->authorize('update' , $answer);
+        return view('answers.edit' , compact('question' , 'answer'));
     }
 
     /**
@@ -67,9 +42,12 @@ class AnswerController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Answer $answer)
+    public function update(Request $request, Question $question , Answer $answer)
     {
-        //
+        $this->authorize('update' , $answer);
+        $data = $request->validate(['body' => 'required']);
+        $answer->update($data);
+        return redirect()->route('questions.show', $question->slug)->with('success' , 'Your Answer Updated successfully');
     }
 
     /**
@@ -80,6 +58,8 @@ class AnswerController extends Controller
      */
     public function destroy(Answer $answer)
     {
-        //
+        $this->authorize('delete' , $answer);
+        $answer->delete();
+        return back()->with('success' , 'Answer deleted successfully');
     }
 }
