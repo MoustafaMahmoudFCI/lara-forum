@@ -55,5 +55,11 @@
 		</div>
 	</div>
 	@include('answers._index' , ['answers' => $question->answers])
+	@auth
 	@include('answers._create')
+	@else
+	<div class="text-center">
+		<p><a href="{{ route('login') }}"><strong>Login</strong></a> to Participate int this discussion</p>
+		</div>
+	@endauth
 	@endsection

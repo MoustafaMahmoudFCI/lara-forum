@@ -35,5 +35,11 @@ class Question extends Model
     	}
     	return 'unanswered';
     }
+
+    public function acceptBestAnswer(Answer $answer)
+    {
+        $this->best_answer_id=$answer->id;
+        $this->save();
+    }
     
 }

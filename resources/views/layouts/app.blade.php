@@ -82,5 +82,6 @@
             toastr.success("{{ Session::get('success') }}")
         @endif
     </script>
+    @stack('js')
 </body>
 </html>

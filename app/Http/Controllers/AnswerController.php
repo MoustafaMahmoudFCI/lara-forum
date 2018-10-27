@@ -62,4 +62,17 @@ class AnswerController extends Controller
         $answer->delete();
         return back()->with('success' , 'Answer has been removed');
     }
+
+    /**
+     * mark answer as best answer
+     * [bestAnswer description]
+     * @param  Answer $answer [description]
+     * @return [type]         [description]
+     */
+    public function bestAnswer(Answer $answer)
+    {
+        $this->authorize('bestAnswer' , $answer);
+        $answer->question->acceptBestAnswer($answer);
+        return back();
+    }
 }

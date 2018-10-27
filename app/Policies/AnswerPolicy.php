@@ -10,16 +10,15 @@ class AnswerPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view the answer.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Answer  $answer
-     * @return mixed
-     */
-    public function view(User $user, Answer $answer)
+   /**
+    * Determine whether the user can mark answer as best answer.
+    * @param  User   $user   [description]
+    * @param  Answer $answer [description]
+    * @return [type]         [description]
+    */
+    public function bestAnswer(User $user, Answer $answer)
     {
-        //
+        return $user->id === $answer->question->user_id;
     }
 
     /**
@@ -30,7 +29,7 @@ class AnswerPolicy
      */
     public function create(User $user)
     {
-        //
+        
     }
 
     /**
@@ -54,7 +53,7 @@ class AnswerPolicy
      */
     public function delete(User $user, Answer $answer)
     {
-        return $user->id === $answer->user_id;
+        return $user->id === $answer->user_id && $answer->id !== $answer->question->best_answer_id;
     }
 
     /**

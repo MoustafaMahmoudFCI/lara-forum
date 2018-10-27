@@ -34,9 +34,20 @@
 						<a class="vote-down off" title="This answer is not useful">
 							<i class="fa fa-caret-down fa-3x"></i>
 						</a>
-						<a class="is-best-answer best-answer" title="Mark this as best answer">
+						@can('bestAnswer' , $answer)
+						<a class="is-best-answer {{ $answer->status }}" title="Mark this as best answer" onclick="event.preventDefault(); document.getElementById('best_answer_{{ $answer->id }}').submit()">
 							<i class="fa fa-check fa-2x"></i>
 						</a>
+						<form id="best_answer_{{ $answer->id }}" action="{{ route('answers.best_answer' , $answer->id) }}" class="hidden" method="post">
+							@csrf
+						</form>
+						@else
+						@if ($answer->is_best_answer)
+								<a class="is-best-answer {{ $answer->status }}" title="Question owner Marked this answer as best answer">
+							<i class="fa fa-check fa-2x"></i>
+						</a>
+						@endif
+						@endcan
 					</div>
 					<div class="media-body">
 						{!! Markdown::convertToHtml($answer->body) !!}

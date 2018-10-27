@@ -29,4 +29,16 @@ class Answer extends Model
     {
         return $this->created_at->diffForHumans();
     }
+    public function getStatusAttribute()
+    {
+        return $this->bestAnswer() ? 'best-answer' : '';
+    }
+    public function getIsBestAnswerAttribute()
+    {
+        return $this->bestAnswer();
+    }
+    public function bestAnswer()
+    {
+        return $this->id === $this->question->best_answer_id;
+    }
 }
