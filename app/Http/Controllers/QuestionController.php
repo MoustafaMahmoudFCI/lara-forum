@@ -86,7 +86,7 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+  public function update(Request $request, Question $question)
     {
         $this->authorize("update" , $question);
 
@@ -95,9 +95,10 @@ class QuestionController extends Controller
             'body'  => 'required' ,
         ]);
         $data['slug'] = str_slug($data['title']);
-        Question::where('id' , $id)->update($data);
-        return redirect('/questions')->with('success' , 'Question has been Updated');
+        $question->update($data);
+        return redirect()->route('questions.index')->with('success' , 'Question has been Updated');
     }
+
 
     /**
      * Remove the specified resource from storage.
