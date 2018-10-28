@@ -35,5 +35,9 @@ class User extends Authenticatable
      public function answers()
     {
         return $this->hasMany('App\Answer');
+    } 
+    public function favorites()
+    {
+        return $this->belongsToMany('App\Question' , 'favorites')->withTimeStamps();
     }
 }

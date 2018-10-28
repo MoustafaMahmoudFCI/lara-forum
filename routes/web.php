@@ -18,8 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+//questions
 Route::resource('questions', 'QuestionController')->except('show');
+Route::get('/questions/{slug}' , 'QuestionController@show')->name('questions.show');
+// questions.answers
 Route::resource('questions.answers', 'AnswerController')->except('index','create','show');
 Route::post('/questions/answers/{answer}/best_answer', 'AnswerController@bestAnswer')->name('answers.best_answer');
-//Route::post('/questions/{question}/answers', 'AnswerController@store')->name('questions.answers.store');
-Route::get('/questions/{slug}' , 'QuestionController@show')->name('questions.show');
+// favorite questions
+Route::post('/questions/{question}/favorites', 'FavoriteController@store')->name('favorite.store');
+Route::delete('/questions/{question}/favorites', 'FavoriteController@destroy')->name('favorite.destroy');

@@ -41,10 +41,16 @@
 							<a class="vote-down off" title="This question is not useful">
 								<i class="fa fa-caret-down fa-3x"></i>
 							</a>
-							<a class="favorite favorited" title="Mark as Favorite">
+							<a class="favorite {{ Auth::guest() ? 'd-none': ($question->is_favorited ? 'favorited' : '') }}" title="Mark as Favorite" onclick="event.preventDefault(); document.getElementById('favorite_{{ $question->id }}').submit()">
 								<i class="fa fa-star fa-2x"></i>
-								<span class="favorites-count">{{ $question->views }}</span>
+								<span class="favorites-count">{{ $question->favorites_count }}</span>
 							</a>
+							<form id="favorite_{{ $question->id }}" action="{{ route('favorite.store' , $question->id) }}" class="hidden" method="post">
+							@csrf
+							@if ($question->is_favorited)
+								@method('DELETE')
+							@endif
+						</form>
 						</div>
 						<div class="media-body">
 							{!! Markdown::convertToHtml($question->body) !!}
