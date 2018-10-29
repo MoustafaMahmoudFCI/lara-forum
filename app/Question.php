@@ -61,5 +61,10 @@ class Question extends Model
     {
         return $this->favorites->count();
     }
+
+    public function votes()
+    {
+        return $this->morphToMany('App\User' , 'votable');
+    }
     
 }

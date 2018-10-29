@@ -5,9 +5,9 @@
 		<div class="col-12">
 			<div class="media">
 				<h3 class="text-primary">{{ $question->title }}</h3>
-			<div class="ml-auto">
-				<a href="{{ route('questions.index') }}" class="btn btn-outline-success text-capitalize">back to all question</a>
-			</div>
+				<div class="ml-auto">
+					<a href="{{ route('questions.index') }}" class="btn btn-outline-success text-capitalize">back to all question</a>
+				</div>
 			</div>
 			<div class="card mt-2">
 				<div class="card-header py-2 ">
@@ -34,23 +34,31 @@
 				<div class="card-body">
 					<div class="media">
 						<div class="d-flex flex-column align-items-center vote-controls">
-							<a class="vote-up" title="This question is useful">
+							<a class="vote-up" onclick="event.preventDefault(); document.getElementById('vote_question_up_{{ $question->id }}').submit()" title="This question is useful" >
 								<i class="fa fa-caret-up fa-3x"></i>
 							</a>
-							<span class="votes-count">{{ $question->votes }}</span>
+								<form id="vote_question_up_{{ $question->id }}" action="{{ route('question.vote' , $question->id) }}" class="hidden" method="post">
+								@csrf
+								<input type="hidden" name="vote" value="1">
+							</form>
+							<span class="votes-count">{{ $question->votes_count }}</span>
 							<a class="vote-down off" title="This question is not useful">
-								<i class="fa fa-caret-down fa-3x"></i>
+								<i class="fa fa-caret-down fa-3x" onclick="event.preventDefault(); document.getElementById('vote_question_down_{{ $question->id }}').submit()"></i>
 							</a>
+								<form id="vote_question_down_{{ $question->id }}" action="{{ route('question.vote' , $question->id) }}" class="hidden" method="post">
+								@csrf
+								<input type="hidden" name="vote" value="-1">
+							</form>
 							<a class="favorite {{ Auth::guest() ? 'd-none': ($question->is_favorited ? 'favorited' : '') }}" title="Mark as Favorite" onclick="event.preventDefault(); document.getElementById('favorite_{{ $question->id }}').submit()">
 								<i class="fa fa-star fa-2x"></i>
 								<span class="favorites-count">{{ $question->favorites_count }}</span>
 							</a>
 							<form id="favorite_{{ $question->id }}" action="{{ route('favorite.store' , $question->id) }}" class="hidden" method="post">
-							@csrf
-							@if ($question->is_favorited)
+								@csrf
+								@if ($question->is_favorited)
 								@method('DELETE')
-							@endif
-						</form>
+								@endif
+							</form>
 						</div>
 						<div class="media-body">
 							{!! Markdown::convertToHtml($question->body) !!}
@@ -66,6 +74,6 @@
 	@else
 	<div class="text-center">
 		<p><a href="{{ route('login') }}"><strong>Login</strong></a> to Participate int this discussion</p>
-		</div>
+	</div>
 	@endauth
 	@endsection

@@ -27,13 +27,21 @@
 			<div class="card-body">
 				<div class="media">
 					<div class="d-flex flex-column align-items-center vote-controls">
-						<a class="vote-up" title="This answer is useful">
-							<i class="fa fa-caret-up fa-3x"></i>
+						<a class="vote-up" title="This answer is useful" onclick="event.preventDefault(); document.getElementById('vote_answer_up_{{ $answer->id }}').submit()">
+							<i class="fa fa-caret-up fa-3x" ></i>
 						</a>
+						<form id="vote_answer_up_{{ $answer->id }}" action="{{ route('answer.vote' , $answer->id) }}" class="hidden" method="post">
+							@csrf
+							<input type="hidden" name="vote" value="1">
+						</form>
 						<span class="votes-count">{{ $answer->votes_count }}</span>
-						<a class="vote-down off" title="This answer is not useful">
+						<a class="vote-down off" title="This answer is not useful" onclick="event.preventDefault(); document.getElementById('vote_answer_down_{{ $answer->id }}').submit()">
 							<i class="fa fa-caret-down fa-3x"></i>
 						</a>
+						<form id="vote_answer_down_{{ $answer->id }}" action="{{ route('answer.vote' , $answer->id) }}" class="hidden" method="post">
+							@csrf
+							<input type="hidden" name="vote" value="-1">
+						</form>
 						@can('bestAnswer' , $answer)
 						<a class="is-best-answer {{ $answer->status }}" title="Mark this as best answer" onclick="event.preventDefault(); document.getElementById('best_answer_{{ $answer->id }}').submit()">
 							<i class="fa fa-check fa-2x"></i>
